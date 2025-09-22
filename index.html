@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
@@ -44,7 +44,14 @@
     to {box-shadow:0 0 20px #00ffff,0 0 40px #00ffff,0 0 60px #00ffff;}
   }
 
-  .countries {display:flex; flex-wrap:wrap; justify-content:center; gap:15px; margin:40px 10px; position:relative; z-index:1;}
+  .countries {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin: 40px 10px;
+    position:relative; z-index:1;
+  }
   .country-tab {display:flex; flex-direction:column; align-items:center; justify-content:center; width:120px;
                 padding:10px; background:rgba(255,255,255,0.2); border:2px solid teal; border-radius:15px;
                 text-align:center; font-size:0.9rem; font-weight:bold; color:#fff;}
@@ -54,11 +61,23 @@
   .join-section {text-align:center; margin:50px 0; position:relative; z-index:1;}
   .join-section h2 {font-size:2rem; margin-bottom:20px;}
   .join-section button {padding:15px 25px; margin:10px; border:none; border-radius:10px; font-size:1rem; font-weight:bold;
-                        cursor:pointer; transition:0.3s;}
-  .join-yes {background:#00ffcc; color:#000;}
-  .join-yes:hover {transform:scale(1.05);}
-  .join-no {background:#ff3300; color:#fff;}
-  .join-no:hover {transform:scale(1.05);}
+                        cursor:pointer; transition:0.3s; position:relative;}
+  .join-yes {
+    background:#00ffcc; color:#000; border: 2px solid #00ffff;
+    box-shadow: 0 0 10px #00ffff,0 0 20px #00ffff,0 0 30px #00ffff;
+  }
+  .join-yes:hover {
+    transform:scale(1.05);
+    box-shadow: 0 0 20px #00ffff,0 0 40px #00ffff,0 0 60px #00ffff;
+  }
+  .join-no {
+    background:#ff3300; color:#fff; border: 2px solid #ff3300;
+    box-shadow:0 0 10px #ff3300,0 0 20px #ff3300,0 0 30px #ff3300;
+  }
+  .join-no:hover {
+    transform:scale(1.05);
+    box-shadow:0 0 20px #ff3300,0 0 40px #ff3300,0 0 60px #ff3300;
+  }
 
   .app-download {text-align:center; margin:30px 0; position:relative; z-index:1;}
   .app-download p {margin-bottom:15px; font-weight:bold; font-size:1rem;}
@@ -66,7 +85,7 @@
   .app-download img {height:60px;}
 
   .carousel-container {position:fixed; bottom:0; width:100%; overflow:hidden; background:rgba(0,0,0,0.3); padding:10px 0; z-index:1;}
-  .carousel {display:flex; gap:15px; animation: scroll-left 05s linear infinite;}
+  .carousel {display:flex; gap:15px; animation: scroll-left 12s linear infinite;}
   .carousel-item {background: linear-gradient(45deg,#4b0082,#008080,#800080,#ff7f50); border:2px solid teal;
                   border-radius:10px; padding:10px 20px; font-weight:bold; white-space:nowrap; color:#fff;
                   box-shadow:0 0 8px rgba(0,255,255,0.6);}
@@ -91,17 +110,19 @@
   <h1 style="text-align:center;">JOIN US TODAY</h1>
   <div class="timers">
     <div class="timer">
-      <h2>1st Meeting</h2>
+      <h2>Business Webinar 1</h2>
       <p id="timer1">00:00:00</p>
     </div>
     <div class="timer">
-      <h2>2nd Meeting</h2>
+      <h2>Business Webinar 2</h2>
       <p id="timer2">00:00:00</p>
     </div>
   </div>
 </header>
 
-<!-- Country Tabs (restored exactly as provided) -->
+</header>
+
+<!-- Countries Grid -->
 <div class="countries">
   <div class="country-tab"><img src="https://flagcdn.com/w80/cr.png" alt="Costa Rica">Costa Rica <span>Daily 7:00 AM & 11:00 AM</span></div>
   <div class="country-tab"><img src="https://flagcdn.com/w80/ky.png" alt="Cayman Islands">Cayman Islands <span>Daily 8:00 AM & 12:00 PM</span></div>
@@ -136,8 +157,6 @@
   <div class="country-tab"><img src="https://flagcdn.com/w80/my.png" alt="Malaysia">Malaysia <span>Daily 9:00 PM & 1:00 AM</span></div>
 </div>
 
-</div>
-
 <div class="join-section">
   <h2>Seats are limited! Reserve your spot NOW!</h2>
   <button class="join-yes" onclick="window.location.href='https://meetn.com/teamattraction'">Yes, I will attend</button>
@@ -169,16 +188,18 @@
   </div>
 </div>
 
-<!-- Countdown JS - your original logic restored -->
+<!-- Countdown JS -->
 <script>
-function startCountdown(id, targetHour, targetMinute) {
+function startCountdown(id, trinidadHour, trinidadMinute){
   const el = document.getElementById(id);
-  function updateTimer() {
+  function updateTimer(){
     const now = new Date();
-    let target = new Date();
-    target.setHours(targetHour, targetMinute, 0, 0);
-    if(now > target){ target.setDate(target.getDate() + 1); }
-    let diff = target - now;
+    const offset = -4; // Trinidad & Tobago is UTC-4
+    const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+    let target = new Date(utc + offset*3600000);
+    target.setHours(trinidadHour, trinidadMinute, 0, 0);
+    if(now.getTime() > target.getTime() - offset*3600000){ target.setDate(target.getDate() + 1); }
+    let diff = target.getTime() - (utc + offset*3600000);
     let hours = Math.floor(diff / (1000*60*60));
     let minutes = Math.floor((diff % (1000*60*60)) / (1000*60));
     let seconds = Math.floor((diff % (1000*60)) / 1000);
@@ -187,10 +208,8 @@ function startCountdown(id, targetHour, targetMinute) {
   updateTimer();
   setInterval(updateTimer,1000);
 }
-
-// Replace these with your exact meeting times
-startCountdown('timer1', 9, 0); // 1st meeting at 9:00
-startCountdown('timer2', 13, 0); // 2nd meeting at 13:00
+startCountdown('timer1', 9, 0);
+startCountdown('timer2', 13, 0);
 </script>
 
 <!-- tsParticles -->
@@ -199,21 +218,37 @@ tsParticles.load("ai-particles",{
   fpsLimit:60,
   background:{color:"transparent"},
   particles:{
-    number:{value:60,density:{enable:true,area:800}},
-    color:{value:"#00ffff"},
+    number:{value:100,density:{enable:true,area:800}},
+    color:{value:["#00ffff","#ff00ff","#ffff00"]},
     shape:{type:"circle"},
-    opacity:{value:0.5,random:true},
-    size:{value:2,random:true},
-    move:{enable:true,speed:0.8,direction:"none",random:true,straight:false,outMode:"out"},
-    line_linked:{enable:true,distance:150,color:"#00ffff",opacity:0.2,width:1}
+    opacity:{value:0.6,random:true},
+    size:{value:{min:2,max:5},random:true},
+    move:{
+      enable:true,
+      speed:2,
+      direction:"none",
+      random:true,
+      straight:false,
+      outModes:"out"
+    },
+    links:{
+      enable:true,
+      distance:150,
+      color:"#00ffff",
+      opacity:0.2,
+      width:1
+    }
   },
-  interactivity:{events:{onHover:{enable:false},onClick:{enable:false}}},
+  interactivity:{
+    events:{
+      onHover:{enable:true, mode:"repulse"},
+      onClick:{enable:true, mode:"push"}
+    }
+  },
   detectRetina:true
 });
 </script>
 
 </body>
 </html>
-
-
 
